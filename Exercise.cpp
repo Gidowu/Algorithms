@@ -138,10 +138,9 @@ int main() {
     reverseVector(nums);
 
     // Test seqSearch
-    double seqInput;
+    double searchValue;
     std::cout << "Input a number to search for: ";
-    std::cin >> seqInput;
-    double searchValue = 2.5;
+    std::cin >> searchValue;
     int index = seqSearch(nums, searchValue);
     if (index != -1) {
         std::cout << searchValue << " found at index: " << index << std::endl;
