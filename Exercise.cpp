@@ -7,7 +7,6 @@
 #include <fstream>    // For std::ifstream
 #include <sstream>    // For std::stringstream
 #include <iterator>
-#include <iostream>
 using namespace std;
 
 void logResultToFile(const std::string& result) {
@@ -23,8 +22,7 @@ void logResultToFile(const std::string& result) {
     std::cout << result << std::endl;
 }
 
-
-void realNums(std::vector<double>& nums){
+void realNums(std::vector<double>& nums) {
     if (nums.empty()) {
         std::cout << "No numbers entered." << std::endl;
         return; // Exit if the vector is empty
@@ -33,15 +31,14 @@ void realNums(std::vector<double>& nums){
     double min = *std::min_element(nums.begin(), nums.end());
     int n = nums.size();
     double sum = std::accumulate(nums.begin(), nums.end(), 0.0);
-    double mean = sum/n;
+    double mean = sum / n;
     std::cout << "Max Value: " << max << std::endl;
     std::cout << "Min Value: " << min << std::endl;
     std::cout << "Mean Value: " << mean << std::endl;
 }
 
 template <class elemType>
-void reverseVector(vector<elemType> &vec)
-{
+void reverseVector(vector<elemType>& vec) {
     int n = vec.size();
     for (int i = 0; i < n / 2; ++i) {
         std::swap(vec[i], vec[n - 1 - i]);
@@ -55,9 +52,9 @@ void reverseVector(vector<elemType> &vec)
 }
 
 template <class elemType>
-int seqSearch(const vector<elemType> &list, const elemType& item){
-    for(int i = 0; i < list.size(); i++){
-        if(list[i]==item){
+int seqSearch(const vector<elemType>& list, const elemType& item) {
+    for (int i = 0; i < list.size(); i++) {
+        if (list[i] == item) {
             return i;
         }
     }
@@ -89,28 +86,47 @@ stats<elemType> GetStats(std::vector<elemType>& nums) {
     return result;
 }
 
-void histogram(){
-    std::map<int, int> histMap;
-    int num;
-    while(true){
-        std::cout << "Enter a number (or -1 to finish): ";
-        std::cin >> num;
-        if (num == -1) break;
-        // Update the map (histogram)
-        histMap[num]++;
-    }
+// Updated histogram function with multiple sets and only positive numbers
+void histogram() {
+    while (true) {
+        std::map<int, int> histMap;
+        int num;
 
-    std::cout << "\nHistogram:\n";
-    for (const auto& input : histMap) {
-        std::cout << "The number " << input.first << " occurs " << input.second << " times." << std::endl;;
+        std::cout << "Enter numbers for this set (or -1 to finish): \n";
+
+        while (true) {
+            std::cout << "Enter a positive number (or -1 to finish this set): ";
+            std::cin >> num;
+            if (num == -1) break;
+            if (num <= 0) {
+                std::cout << "Only positive numbers are allowed. Try again.\n";
+                continue;
+            }
+            histMap[num]++;
+        }
+
+        std::cout << "\nHistogram for this set:\n";
+        for (const auto& input : histMap) {
+            std::cout << "The number " << input.first << " occurs " << input.second << " times.\n";
+        }
+
+        char choice;
+        std::cout << "Do you want to enter another set? (y/n): ";
+        std::cin >> choice;
+
+        if (choice != 'y' && choice != 'Y') {
+            break;
+        }
     }
 }
 
 int main() {
 
+    // Test histogram function
     histogram();
 
-    std::vector<double> nums; // Vector to store numbers from CSV
+    // Vector to store numbers from CSV
+    std::vector<double> nums;
     std::ifstream file("test_data.csv");
     std::string line;
 
@@ -133,7 +149,7 @@ int main() {
         }
     }
 
-    // Call the functions to test them
+    // Test other functions
     realNums(nums);
     reverseVector(nums);
 
