@@ -1,0 +1,6 @@
+Normal Tests
+Number
+10,-5,0,3.14,1.618,42,7
+Boundary Tests
+Number
+9999999,-9999999,2,2,3,-1,-7,1.0e-10,1.0e10,NaN,s
