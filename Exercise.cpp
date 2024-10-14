@@ -7,20 +7,8 @@
 #include <fstream>    // For std::ifstream
 #include <sstream>    // For std::stringstream
 #include <iterator>
+#include <string>
 using namespace std;
-
-void logResultToFile(const std::string& result) {
-    // Log to file
-    std::ofstream outfile("test_results.txt", std::ios_base::app);  // Open in append mode
-    if (outfile.is_open()) {
-        outfile << result << std::endl;
-    } else {
-        std::cerr << "Error opening file to log results" << std::endl;
-    }
-    
-    // Print to terminal
-    std::cout << result << std::endl;
-}
 
 void realNums(std::vector<double>& nums) {
     if (nums.empty()) {
@@ -123,20 +111,78 @@ void histogram() {
 int main() {
 
     // Test histogram function
-    histogram();
+    // histogram();
 
     // Vector to store numbers from CSV
-    std::vector<double> nums;
-    std::ifstream file("test_data.csv");
-    std::string line;
+    while(true){
+        int inputSwitch1;
+        std::cout << "Select 1 to input a vector, 2 to input a histogram, or 3 to quit: ";
+        std::cin >> inputSwitch1;
+        std::vector<double> nums;
+        std::string inputCase1;
+        switch(inputSwitch1){
+            case 1:
+                while (true) {
+                    std::cout << "Enter a numbers for your vector (or q to finish): ";
+                    std::getline(std::cin, inputCase1);
+                    if (inputCase1 == "q") {
+                        break; // Stop processing if 's' is encountered
+                    }
+                    try {
+                        double value = std::stod(inputCase1);
+                        nums.push_back(value); // Add input to the vector
+                    } catch (const std::invalid_argument&) {
+                        std::cout << "Invalid input: " << inputCase1 << std::endl;
+                    }
+                }
+                int inputSwitch2;
+                std::cout << "Select 1 to get vector statistics, 2 to reverse the vector, 3 to do a sequence search, or 4 to quit: ";
+                std::cin >> inputSwitch2;
+                switch(inputSwitch2){
+                    case 1:{
+                        realNums(nums);
+                        break;
+                    }
+                    case 2:{
+                        reverseVector(nums);
+                        break;
+                    }
+                    case 3:{
+                        double searchValue;
+                        std::cout << "Input a number to search for: ";
+                        std::cin >> searchValue;
+                        int index;
+                        index = seqSearch(nums, searchValue);
+                        if (index != -1) {
+                            std::cout << searchValue << " found at index: " << index << std::endl;
+                        } else {
+                            std::cout << searchValue << " not found in the list." << std::endl;
+                        }
+                        break;
+                    }
+                    case 4: {break;}
+                }
+            case 2: {
+                histogram();
+                break;
+                }
+            case 3: {break;}
+        }
+}
 
-    if (!file.is_open()) {
+
+
+
+    //std::ifstream file("test_data.csv");
+    //std::string line;
+
+    /*if (!file.is_open()) {
         std::cerr << "Failed to open the file." << std::endl;
         return 1;
-    }
+    }*/
 
     // Read the CSV file, skipping the header
-    std::getline(file, line); // Skip header
+    /*std::getline(file, line); // Skip header
     while (getline(file, line)) {
         if (line == "s") {
             break; // Stop processing if 's' is encountered
@@ -148,13 +194,14 @@ int main() {
             std::cout << "Invalid input: " << line << std::endl;
         }
     }
+    */
 
     // Test other functions
-    realNums(nums);
-    reverseVector(nums);
+    // realNums(nums);
+    // reverseVector(nums);
 
     // Test seqSearch
-    double searchValue;
+    /*double searchValue;
     std::cout << "Input a number to search for: ";
     std::cin >> searchValue;
     int index = seqSearch(nums, searchValue);
@@ -162,11 +209,11 @@ int main() {
         std::cout << searchValue << " found at index: " << index << std::endl;
     } else {
         std::cout << searchValue << " not found in the list." << std::endl;
-    }
+    }*/
 
     // Test GetStats
-    stats<double> result = GetStats(nums);
-    std::cout << "Mean: " << result.mean << ", SD: " << result.sd << std::endl;
+    // stats<double> result = GetStats(nums);
+    // std::cout << "Mean: " << result.mean << ", SD: " << result.sd << std::endl;
 
     return 0;
 }
