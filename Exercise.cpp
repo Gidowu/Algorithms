@@ -85,6 +85,14 @@ void histogram() {
         while (true) {
             std::cout << "Enter a positive number (or -1 to finish this set): ";
             std::cin >> num;
+
+            if (std::cin.fail()) {
+                std::cin.clear(); // Clear the error flag
+                std::cin.ignore(10000, '\n');
+                std::cout << "Invalid input. Please enter a positive number.\n";
+                continue; // Restart the loop
+            }
+            
             if (num == -1) break;
             if (num <= 0) {
                 std::cout << "Only positive numbers are allowed. Try again.\n";
@@ -110,23 +118,33 @@ void histogram() {
 
 int main() {
 
-    // Test histogram function
-    // histogram();
-
-    // Vector to store numbers from CSV
-    while(true){
+    while (true) {
         int inputSwitch1;
         std::cout << "Select 1 to input a vector, 2 to input a histogram, or 3 to quit: ";
         std::cin >> inputSwitch1;
+
+        // Check if input failed (invalid input like letters or special characters)
+        if (std::cin.fail()) {
+            std::cin.clear(); // Clear the error flag on cin
+            std::cin.ignore(10000, '\n'); // Discard the invalid input
+            std::cout << "Invalid input. Please enter a number.\n";
+            continue; // Prompt the user again
+        }
+
+        // Clear the input buffer to avoid issues with getline
+        std::cin.ignore(10000, '\n'); // This handles the newline left over from std::cin
+
         std::vector<double> nums;
         std::string inputCase1;
-        switch(inputSwitch1){
-            case 1:
+        
+        switch(inputSwitch1) {
+            case 1: {
+                // Input vector
                 while (true) {
-                    std::cout << "Enter a numbers for your vector (or q to finish): ";
+                    std::cout << "Enter numbers for your vector (or q to finish): ";
                     std::getline(std::cin, inputCase1);
                     if (inputCase1 == "q") {
-                        break; // Stop processing if 's' is encountered
+                        break; // Stop processing if 'q' is entered
                     }
                     try {
                         double value = std::stod(inputCase1);
@@ -135,24 +153,25 @@ int main() {
                         std::cout << "Invalid input: " << inputCase1 << std::endl;
                     }
                 }
+
                 int inputSwitch2;
                 std::cout << "Select 1 to get vector statistics, 2 to reverse the vector, 3 to do a sequence search, or 4 to quit: ";
                 std::cin >> inputSwitch2;
-                switch(inputSwitch2){
-                    case 1:{
+
+                switch(inputSwitch2) {
+                    case 1: {
                         realNums(nums);
                         break;
                     }
-                    case 2:{
+                    case 2: {
                         reverseVector(nums);
                         break;
                     }
-                    case 3:{
+                    case 3: {
                         double searchValue;
                         std::cout << "Input a number to search for: ";
                         std::cin >> searchValue;
-                        int index;
-                        index = seqSearch(nums, searchValue);
+                        int index = seqSearch(nums, searchValue);
                         if (index != -1) {
                             std::cout << searchValue << " found at index: " << index << std::endl;
                         } else {
@@ -160,18 +179,38 @@ int main() {
                         }
                         break;
                     }
-                    case 4: {break;}
+                    case 4:
+                        break; // Quit
+                    default:
+                        std::cout << "Invalid option." << std::endl;
                 }
+                break; // Break after handling the vector case
+            }
+
             case 2: {
+                // Input histogram
                 histogram();
                 break;
-                }
-            case 3: {break;}
+            }
+
+            case 3: {
+                // Quit the program
+                std::cout << "Exiting the program." << std::endl;
+                return 0;
+            }
+
+            default: {
+                std::cout << "Invalid input. Please select a valid option." << std::endl;
+                break;
+            }
         }
+    }
+
+    return 0;
 }
 
-
-
+    // This is the code we used in main to take in AI generated test data in our csv "test_data.csv".
+    // The output of the code to the terminal is saved in test_output.txt to show that our tests were successful!
 
     //std::ifstream file("test_data.csv");
     //std::string line;
@@ -209,11 +248,7 @@ int main() {
         std::cout << searchValue << " found at index: " << index << std::endl;
     } else {
         std::cout << searchValue << " not found in the list." << std::endl;
-    }*/
-
-    // Test GetStats
-    // stats<double> result = GetStats(nums);
-    // std::cout << "Mean: " << result.mean << ", SD: " << result.sd << std::endl;
-
+    }
+    
     return 0;
-}
+    */
