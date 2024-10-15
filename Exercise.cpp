@@ -56,7 +56,7 @@ int seqSearch(const vector<elemType>& list, const elemType& item) {
             return i;        // Return the index if the item is found
         }
     }
-    return -1;              // Return -1 if the item is not found
+    return -1;           // Return -1 if the item is not found
 }
 
 // Structure to hold statistical data: mean and standard deviation
